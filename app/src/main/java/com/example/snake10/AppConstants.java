@@ -6,6 +6,11 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+
+/**
+ * AppConstants - класс, содержащий константы и методы для инициализации игровых параметров.
+ * Здесь определены основные константы, такие как размеры экрана, цвета, а также объект GameEngine.
+ */
 public class AppConstants {
     static GameEngine gameEngine;
     static int SCREEN_WIDTH, SCREEN_HEIGHT;
@@ -16,6 +21,11 @@ public class AppConstants {
     static int snakeColor = Color.GREEN;
     static int appleColor;
 
+
+    /**
+     * Метод initialization - инициализация игровых параметров.
+     * @param context Контекст приложения.
+     */
     public static void initialization(Context context) {
         setScreenSize(context);
         AppConstants.gameActivityContext = context;
@@ -23,6 +33,9 @@ public class AppConstants {
         gameEngine = new GameEngine();
     }
 
+    /**
+     * Метод setGameConstants - установка констант игры.
+     */
     public static void setGameConstants() {
         AppConstants.pointSize = 24;
         AppConstants.defaultTailPoints = 3;
@@ -30,10 +43,18 @@ public class AppConstants {
         AppConstants.appleColor = Color.RED;
     }
 
+    /**
+     * Метод getGameEngine - получение объекта GameEngine.
+     * @return Объект GameEngine.
+     */
     public static GameEngine getGameEngine(){
         return gameEngine;
     }
 
+    /**
+     * Метод setScreenSize - установка размеров экрана устройства.
+     * @param context Контекст приложения.
+     */
     public static void setScreenSize(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();

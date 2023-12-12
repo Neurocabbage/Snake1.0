@@ -12,6 +12,10 @@ import android.media.MediaPlayer;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * GameEngine - класс, отвечающий за игровую логику и отрисовку в игре Змейка.
+ * Здесь реализованы методы для управления змейкой, отрисовки элементов и обработки игровых событий.
+ */
 public class GameEngine {
     ArrayList<Snake> snakePointsList = new ArrayList<>();
     String movingPosition;
@@ -23,6 +27,11 @@ public class GameEngine {
     int gameState = 0;
     MediaPlayer points;
 
+
+    /**
+     * Конструктор класса GameEngine.
+     * Инициализирует параметры змейки, яблока, красок, случайных чисел и звука.
+     */
     public GameEngine() {
         snakePaint = createPaintObject(AppConstants.snakeColor);
         applePaint = createPaintObject(AppConstants.appleColor);
@@ -36,6 +45,10 @@ public class GameEngine {
         init();
     }
 
+
+    /**
+     * Метод init - инициализация игровых параметров при старте игры.
+     */
     private void init() {
         gameState = 1;
         snakePointsList.clear();
@@ -48,24 +61,38 @@ public class GameEngine {
         }
     }
 
+
+    /**
+     * Метод moveGrowAndDrawSnake - обработка движения, роста и отрисовка змейки.
+     * @param canvas Объект Canvas для отрисовки.
+     */
     public void moveGrowAndDrawSnake(Canvas canvas) {
         if (gameState == 1) {
             int headX = snakePointsList.get(0).getSnakeX();
             int headY = snakePointsList.get(0).getSnakeY();
+
+            // Если голова змейки совпадает с координатами яблока, то змейка растет
+            // и генерируется новое яблоко.
             if (headX == appleX && headY == appleY) {
                 growSnake();
                 generateNewApple();
             }
+
+            // Обработка движения в зависимости от текущего направления.
             switch(movingPosition){
                 case "right":
+                    // Обновление координат головы змейки вправо.
                     snakePointsList.get(0).setSnakeX(headX + (AppConstants.pointSize * 2));
                     snakePointsList.get(0).setSnakeY(headY);
+
+                    // Если голова выходит за пределы экрана, она появляется с другой стороны.
                     if (snakePointsList.get(0).getSnakeX() >
                             AppConstants.surfaceViewWidth - AppConstants.pointSize){
                         snakePointsList.get(0).setSnakeX(AppConstants.pointSize);
                     }
                     break;
                 case "left":
+                    // Аналогичные действия для движения влево.
                     snakePointsList.get(0).setSnakeX(headX - (AppConstants.pointSize * 2));
                     snakePointsList.get(0).setSnakeY(headY);
                     if (snakePointsList.get(0).getSnakeX() < -AppConstants.pointSize){
@@ -80,6 +107,7 @@ public class GameEngine {
                     }
                     break;
                 case "top":
+                    // Аналогичные действия для движения вверх.
                     snakePointsList.get(0).setSnakeX(headX);
                     snakePointsList.get(0).setSnakeY(headY - AppConstants.pointSize * 2);
                     if (snakePointsList.get(0).getSnakeY() < 0){
@@ -94,6 +122,7 @@ public class GameEngine {
                     }
                     break;
                 case "bottom":
+                    // Аналогичные действия для движения вниз.
                     snakePointsList.get(0).setSnakeX(headX);
                     snakePointsList.get(0).setSnakeY(headY + AppConstants.pointSize * 2);
                     if (snakePointsList.get(0).getSnakeY() >
@@ -102,6 +131,9 @@ public class GameEngine {
                     }
                     break;
             }
+
+            // Если проверка на завершение игры возвращает true, игра завершается,
+            // и переходит на экран GameOver с отображением результата.
             if (checkGameOver(headX, headY)){
                 gameState = 2;
                 Context context = AppConstants.gameActivityContext;
@@ -110,6 +142,7 @@ public class GameEngine {
                 context.startActivity(intent);
                 ((Activity) context).finish();
             } else{
+                // Очистка экрана и отрисовка элементов (головы, тела, яблока, счета).
                 canvas.drawColor(Color.BLACK, PorterDuff.Mode.CLEAR);
                 canvas.drawRect(snakePointsList.get(0).getSnakeX() - AppConstants.pointSize,
                         snakePointsList.get(0).getSnakeY() - AppConstants.pointSize,
@@ -134,6 +167,8 @@ public class GameEngine {
                     headY = getTempY;
                 }
             }
+
+            // Отображение текущего счета в верхней части экрана.
             canvas.drawText(String.valueOf(score),
                     AppConstants.surfaceViewWidth / 2 - 50,
                     TEXT_SIZE,
@@ -141,6 +176,13 @@ public class GameEngine {
         }
     }
 
+
+    /**
+     * Метод checkGameOver - проверка на окончание игры (столкновение с собой).
+     * @param headX Координата X головы змейки.
+     * @param headY Координата Y головы змейки.
+     * @return true, если игра окончена, в противном случае false.
+     */
     private boolean checkGameOver(int headX, int headY) {
         boolean gameOver = false;
         for (int i = 1; i < snakePointsList.size(); i++){
@@ -153,6 +195,10 @@ public class GameEngine {
         return gameOver;
     }
 
+
+    /**
+     * Метод generateNewApple - генерация нового яблока на поле.
+     */
     public void generateNewApple() {
         int surfaceWidth = AppConstants.surfaceViewWidth - (AppConstants.pointSize * 2);
         int surfaceHeight = AppConstants.surfaceViewHeight - (AppConstants.pointSize * 2);
@@ -179,6 +225,10 @@ public class GameEngine {
         }
     }
 
+
+    /**
+     * Метод growSnake - увеличение размера змейки при поедании яблока.
+     */
     private void growSnake() {
         if (points != null){
             points.start();
@@ -188,6 +238,11 @@ public class GameEngine {
         score++;
     }
 
+    /**
+     * Метод createPaintObject - создание объекта Paint с заданным цветом.
+     * @param color Цвет объекта Paint.
+     * @return Объект Paint с указанным цветом.
+     */
     private Paint createPaintObject(int color) {
         Paint paint = new Paint();
         paint.setColor(color);
