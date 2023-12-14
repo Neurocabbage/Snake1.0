@@ -12,13 +12,28 @@ import android.view.WindowManager;
  * Здесь определены основные константы, такие как размеры экрана, цвета, а также объект GameEngine.
  */
 public class AppConstants {
+    // Экземпляр класса GameEngine
     static GameEngine gameEngine;
+
+    // Ширина и высота экрана устройства
     static int SCREEN_WIDTH, SCREEN_HEIGHT;
+
+    // Ширина и высота поверхности отображения игры
     static int surfaceViewWidth, surfaceViewHeight;
+
+    // Контекст активности игры
     static Context gameActivityContext;
+
+    // Размер точки на экране
     static int pointSize;
+
+    // Количество точек хвоста по умолчанию
     static int defaultTailPoints;
+
+    // Цвет змейки (в данном случае зеленый)
     static int snakeColor = Color.GREEN;
+
+    // Цвет яблока
     static int appleColor;
 
 
