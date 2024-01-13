@@ -229,7 +229,7 @@ public class GameEngine {
     /**
      * Метод growSnake - увеличение размера змейки при поедании яблока.
      */
-    private void growSnake() {
+    void growSnake() {
         if (points != null){
             points.start();
         }
@@ -249,5 +249,11 @@ public class GameEngine {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         return paint;
+    }
+
+
+    // геттер для тестирования
+    public int getAppleX() {
+        return appleX;
     }
 }
